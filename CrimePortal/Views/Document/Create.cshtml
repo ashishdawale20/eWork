@@ -1,0 +1,27 @@
+﻿@model CrimePortal.Models.CaseInfo
+
+<h2>Generate Document</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label>Case Number</label>
+        <input asp-for="CaseNumber" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Case Date</label>
+        <input asp-for="CaseDate" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Accuser Name</label>
+        <input asp-for="AccuserName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Accused Name</label>
+        <input asp-for="AccusedName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Address</label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Word</button>
+</form>

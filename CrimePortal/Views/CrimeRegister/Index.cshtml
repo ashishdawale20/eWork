@@ -1,0 +1,271 @@
+﻿@model CrimePortal.ViewModels.CrimeRegisterViewModel
+@{
+    ViewData["Title"] = "Crime Register";
+    Layout = "_Layout";
+}
+
+<form asp-action="Create" asp-controller="CrimeRegister" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left sidebar -->
+            <aside class="col-12 col-md-3 col-lg-2 mb-3 mb-md-0 sticky-top sticky-sidebar">
+                        <div class="border rounded h-100 p-3 bg-light">
+                            <div class="text-center mb-3">
+                                <img class="img-fluid rounded border" alt="sidebar-image" />
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-outline-primary">नविन गुन्ह्याची नोंद करा</a>
+                                <a class="btn btn-outline-primary">गुन्हा नोंदवही</a>
+                                <a class="btn btn-outline-primary">मासिक विवरणे</a>
+                                <a class="btn btn-outline-primary">मद्यविक्री विवरणे</a>
+                                <a class="btn btn-outline-secondary">Change Password</a>
+                                <button type="button" class="btn btn-danger">Log Out</button>
+                            </div>
+                        </div>
+            </aside>
+
+            <!-- Main content -->
+            <main class="col-12 col-md-9 col-lg-10">
+                <!-- Top header -->
+                <div class="border rounded p-3 mb-3 bg-light">
+                    <h2 class="m-0 text-center fw-bold">Crime Register</h2>
+                </div>
+
+                <!-- Case Info -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">प्राथमिक माहिती</h5>
+                    <div class="row g-3 align-items-end">
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">वर्ष</label>
+                            <input asp-for="Year" class="form-control" />
+                            <span asp-validation-for="Year" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 col-lg-3">
+                            <label class="form-label">गुन्हा क्रमांक</label>
+                            <input asp-for="CaseNumber" class="form-control" />
+                            <span asp-validation-for="CaseNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 col-lg-3">
+                            <label class="form-label">गुन्हा दिनांक</label>
+                            <input asp-for="CrimeDate" type="date" class="form-control" />
+                            <span asp-validation-for="CrimeDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">गुन्ह्याची वेळ</label>
+                            <input asp-for="TimeFrom" type="time" class="form-control" />
+                            <span asp-validation-for="TimeFrom" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">वेळेपर्यंत</label>
+                            <input asp-for="TimeTo" type="time" class="form-control" />
+                            <span asp-validation-for="TimeTo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Accused Details -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">आरोपीची माहिती</h5>
+                    <div class="row g-3">
+                        <div class="col-lg-4">
+                            <label class="form-label">आरोपीचे नाव</label>
+                            <input asp-for="Accused.Name" class="form-control" />
+                            <span asp-validation-for="Accused.Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="form-label">वय</label>
+                            <input asp-for="Accused.Age" class="form-control" />
+                            <span asp-validation-for="Accused.Age" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label">आरोपीचे लिंग</label>
+                            <select asp-for="Accused.Gender" class="form-select">
+                                <option value="">-- निवडा --</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                            <span asp-validation-for="Accused.Gender" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label">नातेवाईकाचे नाव</label>
+                            <input asp-for="Accused.RelativeName" class="form-control" />
+                            <span asp-validation-for="Accused.RelativeName" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">आरोपीचा पत्ता</label>
+                            <textarea asp-for="Accused.Address" rows="2" class="form-control"></textarea>
+                            <span asp-validation-for="Accused.Address" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Place of Incident -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">घटनास्थळ</h5>
+                    <textarea asp-for="PlaceOfIncident" rows="2" class="form-control"></textarea>
+                    <span asp-validation-for="PlaceOfIncident" class="text-danger"></span>
+                </section>
+
+                <!-- Punch Witnesses -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">पंचांचे तपशील</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width:80px;">अ. क्र.</th>
+                                    <th>पंचाचे नाव</th>
+                                    <th style="width:100px;">वय</th>
+                                    <th>पत्ता</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblPanch">
+                                @for (int i = 0; i < (Model.Panchas?.Count ?? 2); i++)
+                                {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                <input asp-for="Panchas[i].Name" class="form-control" />
+                                                <span asp-validation-for="Panchas[i].Name" class="text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <input asp-for="Panchas[i].Age" class="form-control" />
+                                                <span asp-validation-for="Panchas[i].Age" class="text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <input asp-for="Panchas[i].Address" class="form-control" />
+                                                <span asp-validation-for="Panchas[i].Address" class="text-danger"></span>
+                                            </td>
+                                        </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Station / Complainant / IO -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">पोलीस माहिती</h5>
+                    <div class="row g-3">
+                        <div class="col-lg-3">
+                            <label class="form-label">पो. स्टे.</label>
+                            <input asp-for="PoliceStation" class="form-control" />
+                            <span asp-validation-for="PoliceStation" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">फिर्यादी</label>
+                            <input asp-for="Complainant" class="form-control" />
+                            <span asp-validation-for="Complainant" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label">तपास अधिकाऱ्याचे नाव</label>
+                            <input asp-for="InvestigatingOfficerName" class="form-control" />
+                            <span asp-validation-for="InvestigatingOfficerName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="form-label">तपास अधिकाऱ्याचे पद</label>
+                            <input asp-for="InvestigatingOfficerRank" class="form-control" />
+                            <span asp-validation-for="InvestigatingOfficerRank" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seized Items / Sections (example grid to match your big table) -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">कायदा/कलम व जप्त माल</h5>
+                    <div class="table-responsive">
+                        <table id="sectionsTable" class="table table-bordered align-middle">
+                            <thead>
+                                <tr>
+                                    <th style="width:220px;">गुन्ह्याचा प्रकार / Act</th>
+                                    <th style="width:180px;">Section</th>
+                                    <th>वर्णन</th>
+                                    <th style="width:160px;">प्रमाण/Qty</th>
+                                    <th style="width:160px;">अंदाजे किंमत</th>
+                                    <th style="width:60px;">क्रिया</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < (Model.Sections?.Count ?? 1); i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input asp-for="Sections[i].Act" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input asp-for="Sections[i].Section" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <textarea asp-for="Sections[i].Description" rows="1" class="form-control"></textarea>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Sections[i].Quantity" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input asp-for="Sections[i].ApproxValue" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm remove-row">-</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <!-- Plus Button -->
+                        <button type="button" id="addRow" class="btn btn-primary mt-2">+ Add Row</button>
+                    </div>
+                </section>
+
+                <!-- Actions -->
+                <div class="d-flex gap-2 justify-content-end">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </main>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    <script>
+        let rowIndex = @Model.Sections?.Count ?? 1;
+
+        document.getElementById("addRow").addEventListener("click", function () {
+            let tableBody = document.querySelector("#sectionsTable tbody");
+
+            let newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td><input name="Sections[${rowIndex}].Act" class="form-control" /></td>
+                <td><input name="Sections[${rowIndex}].Section" class="form-control" /></td>
+                <td><textarea name="Sections[${rowIndex}].Description" rows="1" class="form-control"></textarea></td>
+                <td><input name="Sections[${rowIndex}].Quantity" class="form-control" /></td>
+                <td><input name="Sections[${rowIndex}].ApproxValue" class="form-control" /></td>
+                <td><button type="button" class="btn btn-danger btn-sm remove-row">-</button></td>
+            `;
+
+            tableBody.appendChild(newRow);
+            rowIndex++;
+        });
+
+        // Remove row functionality
+        document.addEventListener("click", function (e) {
+            if (e.target && e.target.classList.contains("remove-row")) {
+                e.target.closest("tr").remove();
+            }
+        });
+    </script>
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
