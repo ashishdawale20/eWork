@@ -1,0 +1,77 @@
+﻿@model IEnumerable<CrimePortal.ViewModels.Crime>
+
+@{
+    ViewBag.Title = "Crime Register";
+}
+
+<div class="container">
+    <h2>Crime Register</h2>
+
+    <!-- Search Panel -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="Search..." />
+        </div>
+        <div class="col-md-3">
+            <input type="date" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <input type="date" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <select class="form-control">
+                <option>प्रथम खबरी अहवाल</option>
+                <option>नमुना पत्र</option>
+                <option>अंतिम नमुना अहवाल</option>
+                <option>इनव्हाईज चालान</option>
+                <option>तपासणी सुची</option>
+                <option>खबरी जबाब</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="mb-3">
+        <button class="btn btn-primary">Search</button>
+        <button class="btn btn-warning">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+        <button class="btn btn-success">Print</button>
+    </div>
+
+    <!-- Data Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>अ क्र</th>
+                <th>गु र क्र व दिनांक</th>
+                <th>गुन्ह्याचे ठिकाण</th>
+                <th>फिर्यादी</th>
+                <th>आरोपी व पत्ता</th>
+                <th>अटक तारीख व वेळ</th>
+                <th>पंचनामा तारीख व वेळ</th>
+                <th>जप्त मुद्देमाल थोडक्यात वर्णन</th>
+                <th>मुद्देमाल किंमत</th>
+                <th>साक्षिदारांची नावे व पत्ता</th>
+                <th>गुन्हा नोदविणाऱ्या अधिकाऱ्याचे नाव व पद</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.CrimeNoDate</td>
+                    <td>@item.Place</td>
+                    <td>@item.Complainant</td>
+                    <td>@item.AccusedAddress</td>
+                    <td>@item.ArrestDate</td>
+                    <td>@item.PanchnamaDate</td>
+                    <td>@item.SeizedItems</td>
+                    <td>@item.SeizedValue</td>
+                    <td>@item.Witnesses</td>
+                    <td>@item.OfficerName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
