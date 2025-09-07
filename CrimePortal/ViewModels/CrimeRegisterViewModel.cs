@@ -53,7 +53,10 @@
 
             // Seized Items / Sections
             public List<SectionViewModel> Sections { get; set; } = new List<SectionViewModel>();
-        }
+
+            [Display(Name = "गुन्ह्याचा प्रकार / Act")]
+            public string Act { get; set; }
+       }
 
         // Nested Models
         public class AccusedViewModel
@@ -88,8 +91,7 @@
 
         public class SectionViewModel
         {
-            [Display(Name = "गुन्ह्याचा प्रकार / Act")]
-            public string Act { get; set; }
+           
 
             [Display(Name = "Section")]
             public string Section { get; set; }

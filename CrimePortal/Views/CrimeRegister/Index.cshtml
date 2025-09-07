@@ -11,20 +11,20 @@
         <div class="row">
             <!-- Left sidebar -->
             <aside class="col-12 col-md-3 col-lg-2 mb-3 mb-md-0 sticky-top sticky-sidebar">
-                        <div class="border rounded h-100 p-3 bg-light">
-                            <div class="text-center mb-3">
-                                <img class="img-fluid rounded border" alt="sidebar-image" />
-                            </div>
+                <div class="border rounded h-100 p-3 bg-light">
+                    <div class="text-center mb-3">
+                        <img class="img-fluid rounded border" alt="sidebar-image" />
+                    </div>
 
-                            <div class="d-grid gap-2">
-                                <a class="btn btn-outline-primary">नविन गुन्ह्याची नोंद करा</a>
-                                <a class="btn btn-outline-primary">गुन्हा नोंदवही</a>
-                                <a class="btn btn-outline-primary">मासिक विवरणे</a>
-                                <a class="btn btn-outline-primary">मद्यविक्री विवरणे</a>
-                                <a class="btn btn-outline-secondary">Change Password</a>
-                                <button type="button" class="btn btn-danger">Log Out</button>
-                            </div>
-                        </div>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-outline-primary">नविन गुन्ह्याची नोंद करा</a>
+                        <a class="btn btn-outline-primary">गुन्हा नोंदवही</a>
+                        <a class="btn btn-outline-primary">मासिक विवरणे</a>
+                        <a class="btn btn-outline-primary">मद्यविक्री विवरणे</a>
+                        <a class="btn btn-outline-secondary">Change Password</a>
+                        <button type="button" class="btn btn-danger">Log Out</button>
+                    </div>
+                </div>
             </aside>
 
             <!-- Main content -->
@@ -107,11 +107,21 @@
                     </div>
                 </section>
 
-                <!-- Place of Incident -->
+                <!-- Place of Incident + Act side by side -->
                 <section class="border rounded p-3 mb-3">
-                    <h5 class="fw-semibold mb-3">घटनास्थळ</h5>
-                    <textarea asp-for="PlaceOfIncident" rows="2" class="form-control"></textarea>
-                    <span asp-validation-for="PlaceOfIncident" class="text-danger"></span>
+                    <h5 class="fw-semibold mb-3">घटनास्थळ व गुन्ह्याचा प्रकार</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">घटनास्थळ</label>
+                            <textarea asp-for="PlaceOfIncident" rows="3" class="form-control"></textarea>
+                            <span asp-validation-for="PlaceOfIncident" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">गुन्ह्याचा प्रकार / Act</label>
+                            <input asp-for="Act" class="form-control" />
+                            <span asp-validation-for="Act" class="text-danger"></span>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Punch Witnesses -->
@@ -130,21 +140,21 @@
                             <tbody id="tblPanch">
                                 @for (int i = 0; i < (Model.Panchas?.Count ?? 2); i++)
                                 {
-                                        <tr>
-                                            <td>@(i + 1)</td>
-                                            <td>
-                                                <input asp-for="Panchas[i].Name" class="form-control" />
-                                                <span asp-validation-for="Panchas[i].Name" class="text-danger"></span>
-                                            </td>
-                                            <td>
-                                                <input asp-for="Panchas[i].Age" class="form-control" />
-                                                <span asp-validation-for="Panchas[i].Age" class="text-danger"></span>
-                                            </td>
-                                            <td>
-                                                <input asp-for="Panchas[i].Address" class="form-control" />
-                                                <span asp-validation-for="Panchas[i].Address" class="text-danger"></span>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>@(i + 1)</td>
+                                        <td>
+                                            <input asp-for="Panchas[i].Name" class="form-control" />
+                                            <span asp-validation-for="Panchas[i].Name" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Panchas[i].Age" class="form-control" />
+                                            <span asp-validation-for="Panchas[i].Age" class="text-danger"></span>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Panchas[i].Address" class="form-control" />
+                                            <span asp-validation-for="Panchas[i].Address" class="text-danger"></span>
+                                        </td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -178,14 +188,13 @@
                     </div>
                 </section>
 
-                <!-- Seized Items / Sections (example grid to match your big table) -->
+                <!-- Seized Items / Sections -->
                 <section class="border rounded p-3 mb-3">
                     <h5 class="fw-semibold mb-3">कायदा/कलम व जप्त माल</h5>
                     <div class="table-responsive">
                         <table id="sectionsTable" class="table table-bordered align-middle">
                             <thead>
                                 <tr>
-                                    <th style="width:220px;">गुन्ह्याचा प्रकार / Act</th>
                                     <th style="width:180px;">Section</th>
                                     <th>वर्णन</th>
                                     <th style="width:160px;">प्रमाण/Qty</th>
@@ -197,9 +206,6 @@
                                 @for (int i = 0; i < (Model.Sections?.Count ?? 1); i++)
                                 {
                                     <tr>
-                                        <td>
-                                            <input asp-for="Sections[i].Act" class="form-control" />
-                                        </td>
                                         <td>
                                             <input asp-for="Sections[i].Section" class="form-control" />
                                         </td>
@@ -219,7 +225,6 @@
                                 }
                             </tbody>
                         </table>
-                        <!-- Plus Button -->
                         <button type="button" id="addRow" class="btn btn-primary mt-2">+ Add Row</button>
                     </div>
                 </section>
@@ -235,7 +240,7 @@
 </form>
 
 @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
     <script>
         let rowIndex = @Model.Sections?.Count ?? 1;
 
@@ -268,4 +273,3 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
