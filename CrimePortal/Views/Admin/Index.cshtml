@@ -1,0 +1,309 @@
+﻿@model List<CrimePortal.ViewModels.UserOfficerListVM>
+
+@{
+    Layout = null; // किंवा तुमच्या _Layout.cshtml वापरा
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'DVOT SurekhMR', Arial, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            padding: 20px;
+        }
+
+        h2 {
+            color: #004085;
+        }
+
+        table {
+            background-color: #fff;
+        }
+
+        th {
+            background-color: #8E2DE2;
+            color: #000;
+        }
+
+        td {
+            font-size: 12px;
+        }
+
+        .btn {
+            margin: 5px;
+        }
+
+
+
+        /* ====== PREMIUM COLORFUL TABLE DESIGN ====== */
+
+        /* Full table container style */
+        table.table {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            background: transparent;
+        }
+
+            table.table thead th {
+                background: linear-gradient(90deg, #ff9966, #ff5e62);
+                color: white;
+                font-size: 14px;
+                text-align: center;
+                padding: 12px;
+                letter-spacing: .5px;
+                border: none !important;
+            }
+
+            table.table tbody tr {
+                background: #ffffff;
+                border-radius: 14px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+                transition: 0.25s;
+            }
+
+                /* Hover Highlight */
+                table.table tbody tr:hover {
+                    transform: scale(1.01);
+                    background: #f0faff !important;
+                    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+                }
+
+            /* smooth padding */
+            table.table tbody td {
+                padding: 10px 14px;
+                vertical-align: middle;
+                font-size: 13px;
+                border: none !important;
+            }
+
+            /* Rounded row corners */
+            table.table tbody tr td:first-child {
+                border-radius: 12px 0 0 12px;
+            }
+
+            table.table tbody tr td:last-child {
+                border-radius: 0 12px 12px 0;
+            }
+
+            /* Checkbox center */
+            table.table td input[type="checkbox"] {
+                transform: scale(1.3);
+            }
+
+        /* Action buttons colorful */
+        .btn-warning {
+            background: linear-gradient(90deg, #fceabb, #f8b500);
+            border: none;
+            color: black;
+        }
+
+            .btn-warning:hover {
+                opacity: .85;
+            }
+
+        .btn-danger {
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            border: none;
+        }
+
+            .btn-danger:hover {
+                opacity: .85;
+            }
+
+        /* Sticky header section beautified */
+        .sticky-top {
+            background: linear-gradient(90deg, #89f7fe, #66a6ff) !important;
+            border-radius: 10px;
+            color: black;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>अधिकारी निहाय माहिती</h2>
+
+        <div class="d-flex justify-content-between align-items-center
+            bg-light shadow-sm p-3 mb-3 sticky-top"
+             style="top:0; z-index:999;">
+
+            <h3 class="m-0">अधिकारी / युजर माहिती</h3>
+
+            <div class="d-flex gap-2">
+                <!-- Add New User Button -->
+                <a asp-action="Create" class="btn btn-primary">
+                    नवा युजर जोडा
+                </a>
+
+                <!-- Change Password Button -->
+                <a asp-action="ChangePassword" class="btn btn-warning">
+                    🔒 पासवर्ड बदला
+                </a>
+
+                <!-- Logout Button -->
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button class="btn btn-danger">
+                        🚪 Logout
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+
+      @@model List<CrimePortal.ViewModels.UserOfficerListVM>
+
+            <form id="antiForgeryForm">
+                @Html.AntiForgeryToken()
+            </form>
+
+<table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>बॉक्स</th>
+                        <th>अनु. क्र.</th>
+                        <th>युजर नेम</th>
+                        <th>युजर टाईप</th>
+                        <th>पद</th>
+                        <th>मुख्य कार्यालय</th>
+                        <th>कार्यालयाचा पत्ता</th>
+                        <th>जिल्हा</th>
+                        <th>विभाग</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <!-- Active Toggle Checkbox -->
+                            <td>
+                                <input type="checkbox"
+                                @(Model[i].IsActive ? "checked" : "")
+                                       onchange="toggleStatus(@Model[i].UserId, this)" />
+
+                            </td>
+
+                            <!-- Serial Number -->
+                            <td>@(i + 1)</td>
+
+                            <!-- User Name -->
+                            <td>@Model[i].UserName</td>
+
+                            <!-- User Type -->
+                            <td>@Model[i].UserType</td>
+
+                            <!-- Post -->
+                            <td>@Model[i].Post</td>
+
+                            <!-- Office Name -->
+                            <td>@Model[i].OfficeName</td>
+
+                            <!-- Office Address -->
+                            <td>@Model[i].OfficeAddress</td>
+
+                            <!-- District -->
+                            <td>@Model[i].District</td>
+
+                            <!-- Division -->
+                            <td>@Model[i].Division</td>
+
+                            <!-- Actions: Edit / Change Password / Delete -->
+                            <td>
+                                <a asp-action="Edit"
+                                   asp-route-id="@Model[i].UserId"
+                                   class="btn btn-sm btn-warning">Edit</a>
+
+                                <!-- Change Password Button -->
+                                <a asp-controller="Admin"
+                                   asp-action="ResetUserPassword"
+                                   asp-route-id="@Model[i].UserId"
+                                   class="btn btn-warning btn-sm">
+                                    🔑 Reset
+                                </a>
+
+                                <form asp-action="Delete"
+                                      asp-route-id="@Model[i].UserId"
+                                      method="post" style="display:inline-block;">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('खरोखर Delete करायचे?');">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+</table>
+
+            <form asp-controller="Admin" asp-action="Index" method="post" style="display:none;">
+                @Html.AntiForgeryToken()
+            </form>
+
+
+            
+
+
+<script>
+    // Select/Deselect All Checkbox
+    document.getElementById('checkAll').addEventListener('click', function () {
+        document.querySelectorAll('input[name="selected"]').forEach(c => c.checked = this.checked);
+    });
+</script>
+
+
+
+       
+    </div>
+
+
+    <script>
+        document.getElementById('checkAll').addEventListener('click', function () {
+            document.querySelectorAll('input[name="selected"]').forEach(chk => chk.checked = this.checked);
+        });
+    </script>
+
+
+    <!-- ================= TOGGLE USER STATUS JS ================= -->
+   
+
+    <script>
+        function toggleStatus(userId, checkbox) {
+            fetch('/Admin/ToggleUserStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken':
+                        document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    status: checkbox.checked
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error();
+            })
+            .catch(err => {
+                alert("Error updating status.");
+                checkbox.checked = !checkbox.checked; // rollback
+            });
+        }
+    </script>
+
+
+</body>
+</html>

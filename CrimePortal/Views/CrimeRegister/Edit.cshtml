@@ -1,0 +1,728 @@
+﻿@model CrimePortal.ViewModels.CrimeRegisterViewModel
+@{
+    ViewData["Title"] = "Crime Register";
+    Layout = "_Layout";
+}
+
+<form asp-action="Index" asp-controller="CrimeRegister" method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="CrimeRegisterId" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h2, h5 {
+            font-weight: 600;
+        }
+
+        /* Sidebar Design */
+        .sticky-sidebar {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 30%, #38ef7d 100%); /* Blue-Purple Gradient */
+            color: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+            .sticky-sidebar label {
+                color: #f8f9fa;
+                font-weight: 500;
+            }
+
+            .sticky-sidebar .btn-outline-primary,
+            .sticky-sidebar .btn-outline-secondary {
+                color: #fff;
+                border-color: #fff;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+                .sticky-sidebar .btn-outline-primary:hover,
+                .sticky-sidebar .btn-outline-secondary:hover {
+                    background-color: #fff;
+                    color: #4e54c8;
+                }
+
+            .sticky-sidebar .btn-danger {
+                background: #ff4b5c;
+                border: none;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+                .sticky-sidebar .btn-danger:hover {
+                    background: #ff2e44;
+                }
+
+            .sticky-sidebar .border {
+                border: none !important;
+            }
+
+        /* Card Sections */
+        section {
+            background: #ffffffdd;
+            border: none !important;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+            /* Section Headings */
+            section h5 {
+                background: linear-gradient(90deg, #6a11cb, #2575fc);
+                color: white;
+                padding: 8px 12px;
+                border-radius: 8px;
+                margin: -12px -12px 16px -12px;
+                font-size: 1.1rem;
+            }
+
+        /* Inputs */
+        .form-control, .form-select, textarea {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+            .form-control:focus, .form-select:focus, textarea:focus {
+                border-color: #2575fc;
+                box-shadow: 0 0 8px rgba(37, 117, 252, 0.4);
+            }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(37,117,252,0.4);
+            }
+
+        .btn-outline-secondary {
+            border-radius: 30px;
+        }
+
+        /* Table */
+        table.table {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+            table.table th {
+                background: #2575fc;
+                color: white;
+                text-align: center;
+            }
+
+            table.table td, table.table th {
+                vertical-align: middle;
+            }
+
+        /* Top header */
+        .bg-light {
+            background: linear-gradient(to right, #74ebd5, #ACB6E5) !important;
+            color: #333;
+        }
+
+        /* Save & Cancel buttons area */
+        .d-flex.gap-2.justify-content-end {
+            margin-bottom: 30px;
+        }
+
+
+        .d-grid .btn {
+            background: linear-gradient(135deg, #5e60ce, #5390d9);
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 15px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+            /* Hover झाल्यावर रंग थोडा गडद करा */
+            .d-grid .btn:hover {
+                background: linear-gradient(135deg, #4a4fe4, #3d7acb);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+            }
+
+            /* क्लिक (active) झाल्यावर effect */
+            .d-grid .btn:active {
+                background: linear-gradient(135deg, #3f51b5, #375fa8);
+                transform: translateY(0);
+                box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.3);
+            }
+
+            /* focus outline काढून टाकणे */
+            .d-grid .btn:focus {
+                box-shadow: none !important;
+                outline: none !important;
+            }
+
+    </style>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left sidebar -->
+            <aside class="col-12 col-md-3 col-lg-2 mb-3 mb-md-0 sticky-top sticky-sidebar">
+                <div class="border rounded h-100 p-3 bg-light">
+                    <div class="mb-3">
+                        <label class="fw-bold d-block">Login By : @Model.UserId</label>
+                        <label class="d-block">पद : @Model.OfficerRank</label>
+                        <label class="d-block">ऑफिस नाव : @Model.OfficeName</label>
+                        <label class="d-block">ऑफिस पत्ता : @Model.OfficeAddress</label>
+                        <label class="d-block">जिल्हा : @Model.District</label>
+                        <label class="d-block">डीव्हीजन : @Model.Division</label>
+
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-outline-primary btn-green" asp-controller="CrimeRegisterListView" asp-action="Index">नमुना वाहक नोंदवा</a>
+                        <a class="btn btn-outline-primary btn-blue" asp-controller="Crime" asp-action="Index">गुन्हा नोंदवही</a>
+                        <a class="btn btn-outline-primary btn-orange">मासिक विवरणे</a>
+                        <a class="btn btn-outline-primary btn-purple">मद्यविक्री विवरणे</a>
+                        <a class="btn btn-outline-secondary btn-gray">Change Password</a>
+                        <form method="post" asp-controller="Account" asp-action="Logout">
+                            <button type="submit" class="btn btn-danger btn-red">Log Out</button>
+                        </form>
+
+
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main content -->
+            <main class="col-12 col-md-9 col-lg-10">
+                <!-- Top header -->
+                <div class="border rounded p-3 mb-3 bg-light">
+                    <h2 class="m-0 text-center fw-bold">Crime Register</h2>
+                </div>
+                <!-- 🔹 Add messages here -->
+                @if (TempData["ModelErrors"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["ModelErrors"]</div>
+                }
+                @if (TempData["SaveError"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["SaveError"]</div>
+                }
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>@TempData["Success"]</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <script>
+                        setTimeout(function () {
+                            var alert = document.querySelector('.alert');
+                            if (alert) {
+                                alert.classList.remove('show');
+                                alert.classList.add('fade');
+                            }
+                        }, 3000);
+                    </script>
+                }
+                <!-- Case Info -->
+
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">प्राथमिक माहिती</h5>
+                    <div class="row g-3">
+                        <!-- g-3 adds spacing between columns -->
+
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">वर्ष</label>
+                            <input asp-for="Year" class="form-control marathi" value="@Model.Year.ToString()" />
+                            <span asp-validation-for="Year" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">गुन्हा क्रमांक</label>
+                            <input asp-for="CaseNumber" class="form-control marathi" />
+                            <span asp-validation-for="CaseNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">गुन्हा दिनांक</label>
+                            <input asp-for="CrimeDate" type="date" class="form-control marathi"
+                                   value="@Model.CrimeDate.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="CrimeDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">गुन्ह्याची वेळ</label>
+                            <input asp-for="TimeFrom" type="time" class="form-control marathi"
+                                   value="@(Model.TimeFrom.HasValue ? Model.TimeFrom.Value.ToString(@"hh\:mm") : "")" />
+                            <span asp-validation-for="TimeFrom" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 col-lg-2">
+                            <label class="form-label">वेळेपर्यंत</label>
+                            <input asp-for="TimeTo" type="time" class="form-control marathi"
+                                   value="@(Model.TimeTo.HasValue ? Model.TimeTo.Value.ToString(@"hh\:mm") : "")" />
+                            <span asp-validation-for="TimeTo" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </section>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const dateInput = document.getElementById("CrimeDate");
+                        if (dateInput && (!dateInput.value || dateInput.value === "0001-01-01")) {
+                            const today = new Date().toISOString().split("T")[0];
+                            dateInput.value = today;
+                        }
+                    });
+                </script>
+
+
+                <!-- Accused Details -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">आरोपीची माहिती</h5>
+                    <div class="row g-3">
+                        <div class="col-lg-4">
+                            <label class="form-label">आरोपीचे नाव</label>
+                            <input asp-for="AccusedName" class="form-control marathi" />
+                            <span asp-validation-for="AccusedName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="form-label">वय</label>
+                            <input asp-for="AccusedAge" class="form-control marathi" />
+                            <span asp-validation-for="AccusedAge" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label">आरोपीचे लिंग</label>
+                            <select asp-for="AccusedGender" class="form-select">
+                                <option value="">-- निवडा --</option>
+                                <option>पुरुष</option>
+                                <option>स्त्री</option>
+                                <option>अन्य</option>
+                            </select>
+                            <span asp-validation-for="AccusedGender" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label">नातेवाईकाचे नाव</label>
+                            <input asp-for="AccusedRelativeName" class="form-control marathi" />
+                            <span asp-validation-for="AccusedRelativeName" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">आरोपीचा पत्ता</label>
+                            <textarea asp-for="AccusedAddress" rows="2" class="form-control marathi"></textarea>
+                            <span asp-validation-for="AccusedAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Place of Incident + Act side by side -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">घटनास्थळ व गुन्ह्याचा प्रकार</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">घटनास्थळ</label>
+                            <textarea asp-for="PlaceOfIncident" rows="3" class="form-control marathi"></textarea>
+                            <span asp-validation-for="PlaceOfIncident" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">कलम</label>
+                            <input asp-for="Act" class="form-control marathi" />
+                            <span asp-validation-for="Act" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">कोर्ट</label>
+                            <input asp-for="Court" class="form-control marathi" />
+                            <span asp-validation-for="Court" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">पंचांचे तपशील</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width:80px;">अ. क्र.</th>
+                                    <th>पंचाचे नाव</th>
+                                    <th style="width:100px;">वय</th>
+                                    <th>पत्ता</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Panchas.Count; i++)
+                                {
+                                    <tr>
+                                        <td>@(i + 1)</td>
+                                        <td><input asp-for="@Model.Panchas[i].Name" class="form-control" /></td>
+                                        <td><input asp-for="@Model.Panchas[i].Age" type="number" class="form-control" /></td>
+                                        <td><input asp-for="@Model.Panchas[i].Address" class="form-control" /></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+
+                <!-- Station / Complainant / IO -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">पोलीस माहिती</h5>
+                    <div class="row g-3">
+                        <div class="col-lg-3">
+                            <label class="form-label">पो. स्टे.</label>
+                            <input asp-for="PoliceStation" class="form-control marathi" />
+                            <span asp-validation-for="PoliceStation" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">फिर्यादी</label>
+                            <input asp-for="Complainant" class="form-control marathi" />
+                            <span asp-validation-for="Complainant" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label">तपास अधिकाऱ्याचे नाव</label>
+                            <input asp-for="InvestigatingOfficerName" class="form-control" />
+                            <span asp-validation-for="InvestigatingOfficerName" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="form-label">तपास अधिकाऱ्याचे पद</label>
+                            <input asp-for="InvestigatingOfficerRank" class="form-control marathi" />
+                            <span asp-validation-for="InvestigatingOfficerRank" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+                <!-- Seized Items / Sections -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">जप्त मुद्देमाल</h5>
+
+                    <div class="table-responsive">
+                        <table id="seizedItemsTable" class="table table-bordered align-middle">
+                            <thead>
+                                <tr>
+                                    <th style="width:80px;">अ. क्र.</th>
+                                    <th style="width:140px;">मालमत्तेचा वर्ग</th>
+                                    <th style="width:140px;">मालमत्तेचा प्रकार</th>
+                                    <th>वर्णन</th>
+                                    <th style="width:120px;">मुद्देमालाची किंमत</th>
+                                    <th>काढा</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.SeizedItems.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="serial-no">@(i + 1)</td>
+                                        <td>
+                                            <select asp-for="SeizedItems[i].PropertyClass" class="form-select marathi">
+                                                <option value="">-- निवडा --</option>
+                                                <option value="मादक द्रव्य">मादक द्रव्य</option>
+                                                <option value="इतर">इतर</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select asp-for="SeizedItems[i].PropertyType" class="form-select marathi">
+                                                <option value="">-- निवडा --</option>
+                                                <option value="देशी दारु">देशी दारु</option>
+                                                <option value="हातभट्टी दारु">हातभट्टी दारु</option>
+                                                <option value="विदेशी दारु">विदेशी दारु</option>
+                                                <option value="मोहासडवा">मोहासडवा</option>
+                                                <option value="बिअर">बिअर</option>
+                                                <option value="इतर साहित्य">इतर साहित्य</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <textarea asp-for="SeizedItems[i].Description" rows="1" class="form-control marathi description-field"></textarea>
+                                        </td>
+                                        <td style="width: 120px;">
+                                            <input asp-for="SeizedItems[i].ApproxValue" class="form-control marathi approx-value" style="width:120px;" />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm remove-row">-</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <!-- ✅ केवल एक Add Row Button -->
+                        <button type="button" id="addSeizedRow" class="btn btn-primary mt-3">+ Add Row</button>
+
+                        <script>
+                            function reindexSeizedRows() {
+                                const tbody = document.querySelector('#seizedItemsTable tbody');
+                                Array.from(tbody.rows).forEach((row, i) => {
+                                    // serial no
+                                    const serial = row.querySelector('.serial-no');
+                                    if (serial) serial.textContent = (i + 1);
+
+                                    // select/input elements — update their name attributes
+                                    row.querySelectorAll('select, textarea, input').forEach(elem => {
+                                        const name = elem.getAttribute('name') || elem.getAttribute('asp-for');
+                                        if (name) {
+                                            // replace index inside bracket e.g. SeizedItems[2].PropertyType -> SeizedItems[0].PropertyType
+                                            const newName = name.replace(/SeizedItems\[\d+\]/, `SeizedItems[${i}]`);
+                                            elem.setAttribute('name', newName);
+                                        }
+                                    });
+                                });
+                            }
+
+                            document.addEventListener('click', function(e){
+                                if (e.target && e.target.matches('#addSeizedRow')) {
+                                    // after adding row (your existing code), call reindexSeizedRows()
+                                    setTimeout(reindexSeizedRows, 10);
+                                }
+                                if (e.target && e.target.matches('.remove-row')) {
+                                    const tr = e.target.closest('tr');
+                                    if (tr) tr.remove();
+                                    setTimeout(reindexSeizedRows, 10);
+                                }
+                            });
+                        </script>
+
+
+                        <!-- ✅ एकूण किंमत -->
+                        <div class="d-flex justify-content-end align-items-center mt-3">
+                            <label class="fw-bold me-3 mb-0">मुद्देमालाची एकुण किंमत:</label>
+                            <input type="text" id="totalValue" class="form-control text-end" style="width:160px;" readonly />
+                        </div>
+                    </div>
+                </section>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+
+                        const tableBody = document.querySelector('#seizedItemsTable tbody');
+                        const addBtn = document.querySelector('#addSeizedRow');
+                        const totalInput = document.querySelector('#totalValue');
+
+                        // 🔹 इंग्रजी → मराठी अंक रूपांतरण फंक्शन
+                        function toMarathiNumber(num) {
+                            if (!num) return "";
+                            const map = { '0':'०', '1':'१', '2':'२', '3':'३', '4':'४', '5':'५', '6':'६', '7':'७', '8':'८', '9':'९' };
+                            return num.toString().replace(/[0-9]/g, d => map[d]);
+                        }
+
+                        // 🔹 एकूण किंमत कॅल्क्युलेट करणे
+                        function calculateTotal() {
+                            let total = 0;
+                            tableBody.querySelectorAll('.approx-value').forEach(input => {
+                                total += parseFloat(input.value) || 0;
+                            });
+                            totalInput.value = toMarathiNumber(total.toFixed(2));
+                        }
+
+                        // 🔹 Add Row बटण
+                        addBtn.addEventListener('click', () => {
+                            const index = tableBody.rows.length;
+                            const newRow = document.createElement('tr');
+                            newRow.innerHTML = `
+                                <td>${index + 1}</td>
+                                <td>
+                                    <select name="SeizedItems[${index}].PropertyClass" class="form-select marathi">
+                                        <option value="">-- निवडा --</option>
+                                        <option value="मादक द्रव्य">मादक द्रव्य</option>
+                                        <option value="इतर">इतर</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="SeizedItems[${index}].PropertyType" class="form-select marathi">
+                                        <option value="">-- निवडा --</option>
+                                        <option value="देशी दारु">देशी दारु</option>
+                                        <option value="हातभट्टी दारु">हातभट्टी दारु</option>
+                                        <option value="विदेशी दारु">विदेशी दारु</option>
+                                        <option value="मोहासडवा">मोहासडवा</option>
+                                        <option value="बिअर">बिअर</option>
+                                        <option value="इतर साहित्य">इतर साहित्य</option>
+                                    </select>
+                                </td>
+                                <td style="width: 350px;">
+                                    <textarea name="SeizedItems[${index}].Description" rows="1" class="form-control marathi"></textarea>
+                                </td>
+                                <td style="width: 100px;">
+                                    <input name="SeizedItems[${index}].ApproxValue" class="form-control marathi approx-value" />
+                                </td>
+                                <td><button type="button" class="btn btn-danger btn-sm remove-row">-</button></td>
+                            `;
+                            tableBody.appendChild(newRow);
+                        });
+
+                        // 🔹 Input बदलल्यावर total अपडेट
+                        tableBody.addEventListener('input', e => {
+                            if (e.target.classList.contains('approx-value')) {
+                                calculateTotal();
+                            }
+                        });
+
+                        // 🔹 Remove Row बटण
+                        tableBody.addEventListener('click', e => {
+                            if (e.target.classList.contains('remove-row')) {
+                                e.target.closest('tr').remove();
+                                calculateTotal();
+                            }
+                        });
+
+                        // 🔹 सुरुवातीला total मोजा (जर आधीच्या रांगा असतील तर)
+                        calculateTotal();
+
+                    });
+                </script>
+
+
+
+
+
+
+
+
+                <!-- 🧪 नमुना माहिती (Sample Information) सेक्शन -->
+                <section class="border rounded p-3 mb-3">
+                    <h5 class="fw-semibold mb-3">नमुना माहिती</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">नमुना संख्या</label>
+                            <select asp-for="SampleCount" class="form-select marathi" id="sampleCount">
+                                <option value="">-- निवडा --</option>
+                                <option value="1">एक</option>
+                                <option value="2">दोन</option>
+                                <option value="3">तीन</option>
+                                <option value="4">चार</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">नमुना वाहकाचे नाव</label>
+                            <input asp-for="CarrierName" class="form-control marathi" />
+                        </div>
+                    </div>
+
+                    <div id="sampleTypeContainer">
+                        <label class="form-label">नमुना प्रकार</label>
+                        <table id="samplesTable" class="table table-bordered align-middle">
+                            <thead>
+                                <tr>
+                                    <th>अ. क्र.</th>
+                                    <th>नमुना प्रकार</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Samples.Count; i++)
+                                {
+                                    <tr>
+                                        <td>@(i + 1)</td>
+                                        <td>
+                                            <select asp-for="Samples[i].SampleType" class="form-select marathi">
+                                                <option value="">-- निवडा --</option>
+                                                <option value="देशी दारु 180 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल">देशी दारु 180 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल</option>
+                                                <option value="देशी दारु 90 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल">देशी दारु 90 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल</option>
+                                                <option value="एका 180 मि. ली. क्षमतेच्या बॉटल मध्ये हातभट्टी दारु भरुन">एका 180 मि. ली. क्षमतेच्या बॉटल मध्ये हातभट्टी दारु भरुन</option>
+                                                <option value="एका 180 मि. ली. क्षमतेच्या बॉटल मध्ये मोहासडवा भरुन">एका 180 मि. ली. क्षमतेच्या बॉटल मध्ये मोहासडवा भरुन</option>
+                                                <option value="विदेशी दारु 180 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल">विदेशी दारु 180 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल</option>
+                                                <option value="विदेशी दारु 90 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल">विदेशी दारु 90 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल</option>
+                                                <option value="बिअर बॉटल">बिअर बॉटल</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+
+
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const table = document.querySelector('#samplesTable tbody');
+                        const sampleCount = document.getElementById('sampleCount');
+                        const totalInput = document.getElementById('totalValue');
+
+                        // Sample Type Options
+                        const sampleTypeOptions = [
+                            "देशी दारु 180 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल",
+                            "देशी दारु 90 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल",
+                            "एका 180 मि. ली. क्षमतेच्या बॉटल मध्ये हातभट्टी दारु भरुन",
+                            "एका 180 मि. ली. क्षमतेच्या बॉटल मध्ये मोहासडवा भरुन",
+                            "विदेशी दारु 180 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल",
+                            "विदेशी दारु 90 मि. ली. क्षमतेची एक कंपनी सिलबंद बॉटल",
+                            "बिअर बॉटल"
+                        ];
+
+                        // Sample Count change → auto add rows
+                        sampleCount.addEventListener('change', () => {
+                            const count = parseInt(sampleCount.value);
+                            table.innerHTML = ''; // Clear existing rows
+
+                            if (!isNaN(count) && count > 0) {
+                                for (let i = 0; i < count; i++) {
+                                    const newRow = document.createElement('tr');
+                                    newRow.innerHTML = `
+                                        <td>${i + 1}</td>
+                                        <td>
+                                            <select name="Samples[${i}].SampleType" class="form-select marathi">
+                                                <option value="">-- निवडा --</option>
+                                                ${sampleTypeOptions.map(opt => `<option>${opt}</option>`).join('')}
+                                            </select>
+                                        </td>
+                                    `;
+                                    table.appendChild(newRow);
+                                }
+                            }
+                        });
+
+                        // Update Total Value from SeizedItems
+                        function calculateTotal() {
+                            let total = 0;
+                            document.querySelectorAll('.approx-value').forEach(input => {
+                                total += parseFloat(input.value) || 0;
+                            });
+                            totalInput.value = total.toFixed(2); // आपल्याला मराठी digits हव्या असतील तर map करून convert करता येईल
+                        }
+
+                        // Listen for changes in ApproxValue inputs
+                        document.querySelectorAll('.approx-value').forEach(input => {
+                            input.addEventListener('input', calculateTotal);
+                        });
+                    });
+                </script>
+
+
+
+
+
+
+
+
+
+                <!-- Actions -->
+                <div class="d-flex gap-2 justify-content-end">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </main>
+        </div>
+    </div>
+
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

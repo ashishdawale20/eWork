@@ -1,109 +1,72 @@
-﻿namespace CrimePortal.ViewModels
+﻿using CrimePortal.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+
+namespace CrimePortal.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-   
-        public class CrimeRegisterViewModel
-        {
-            // Primary Case Information
-            [Required]
-            [Display(Name = "वर्ष")]
-            public int Year { get; set; }
+    public class CrimeRegisterViewModel
+    {
 
-            [Required]
-            [Display(Name = "गुन्हा क्रमांक")]
-            public string CaseNumber { get; set; }
+        public int CrimeRegisterId { get; set; }
+        public int Year { get; set; }
+        public string CaseNumber { get; set; } = string.Empty;
+        public DateTime CrimeDate { get; set; } = DateTime.Today;
+        public TimeSpan? TimeFrom { get; set; }
+        public TimeSpan? TimeTo { get; set; }
 
-            [Required]
-            [DataType(DataType.Date)]
-            [Display(Name = "गुन्हा दिनांक")]
-            public DateTime CrimeDate { get; set; }
+        public string? AccusedName { get; set; }
+        public int? AccusedAge { get; set; }
+        public string? AccusedGender { get; set; }
+        public string? AccusedRelativeName { get; set; }
+        public string? AccusedAddress { get; set; }
 
-            [DataType(DataType.Time)]
-            [Display(Name = "गुन्ह्याची वेळ (पासून)")]
-            public TimeSpan? TimeFrom { get; set; }
+        public string? PlaceOfIncident { get; set; }
+        public string? Act { get; set; }
+        public string? Court { get; set; }
 
-            [DataType(DataType.Time)]
-            [Display(Name = "वेळ (पर्यंत)")]
-            public TimeSpan? TimeTo { get; set; }
+        public string? PoliceStation { get; set; }
+        public string? Complainant { get; set; }
+        public string? InvestigatingOfficerName { get; set; }
+        public string? InvestigatingOfficerRank { get; set; }
 
-            // Accused Details
-            public AccusedViewModel Accused { get; set; } = new AccusedViewModel();
+        public int UserId { get; set; }
 
-            // Panch Witnesses
-            public List<PanchaViewModel> Panchas { get; set; } = new List<PanchaViewModel>();
+        public string? OfficerRank { get; set; }
+        public string? OfficeName { get; set; }
+        public string? OfficeAddress { get; set; }
+        public string? District { get; set; }
+        public string? Division { get; set; }
 
-            // Place of Incident
-            [Display(Name = "घटनास्थळ")]
-            public string PlaceOfIncident { get; set; }
+        public string? CarrierName { get; set; }
+        public int? SampleCount { get; set; }
+        public decimal? TotalSeizedValue { get; set; }
 
-            // Police/Complainant/Investigating Officer
-            [Display(Name = "पो. स्टे.")]
-            public string PoliceStation { get; set; }
+        public List<Pancha> Panchas { get; set; } = new();
+        public List<Sample> Samples { get; set; } = new();
+        public List<SeizedItem> SeizedItems { get; set; } = new();
 
-            [Display(Name = "फिर्यादी")]
-            public string Complainant { get; set; }
+        [BindNever]
+        public List<SelectListItem> ComplainantList { get; set; } = new();
 
-            [Display(Name = "तपास अधिकाऱ्याचे नाव")]
-            public string InvestigatingOfficerName { get; set; }
+        [BindNever]
+        public List<SelectListItem> CarrierList { get; set; } = new();
 
-            [Display(Name = "तपास अधिकाऱ्याचे पद")]
-            public string InvestigatingOfficerRank { get; set; }
+        [BindNever]
+        public List<SelectListItem> OfficerNameList { get; set; } = new();
 
-            // Seized Items / Sections
-            public List<SectionViewModel> Sections { get; set; } = new List<SectionViewModel>();
+        [BindNever]
+        public List<SelectListItem> OfficerRankList { get; set; } = new();
 
-            [Display(Name = "गुन्ह्याचा प्रकार / Act")]
-            public string Act { get; set; }
-       }
+        public decimal? HandBhattiLiters { get; set; }
+        public decimal? MohasavaLiters { get; set; }
 
-        // Nested Models
-        public class AccusedViewModel
-        {
-            [Display(Name = "आरोपीचे नाव")]
-            public string Name { get; set; }
+        public decimal? DeshiLiquorLiters { get; set; }
+        public decimal? ForeignLiquorLiters { get; set; }
+        public decimal? BeerLiters { get; set; }
 
-            [Display(Name = "वय")]
-            public int? Age { get; set; }
 
-            [Display(Name = "लिंग")]
-            public string Gender { get; set; }
-
-            [Display(Name = "नातेवाईकाचे नाव")]
-            public string RelativeName { get; set; }
-
-            [Display(Name = "पत्ता")]
-            public string Address { get; set; }
-        }
-
-        public class PanchaViewModel
-        {
-            [Display(Name = "पंचाचे नाव")]
-            public string Name { get; set; }
-
-            [Display(Name = "वय")]
-            public int? Age { get; set; }
-
-            [Display(Name = "पत्ता")]
-            public string Address { get; set; }
-        }
-
-        public class SectionViewModel
-        {
-           
-
-            [Display(Name = "Section")]
-            public string Section { get; set; }
-
-            [Display(Name = "वर्णन")]
-            public string Description { get; set; }
-
-            [Display(Name = "प्रमाण")]
-            public string Quantity { get; set; }
-
-            [Display(Name = "अंदाजे किंमत")]
-            public string ApproxValue { get; set; }
-        }
-
+    }
 }

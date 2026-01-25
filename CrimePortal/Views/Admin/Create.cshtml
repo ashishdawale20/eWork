@@ -1,0 +1,324 @@
+﻿@model CrimePortal.ViewModels.AdminUserCreateViewModel
+
+@{
+    ViewData["Title"] = "अधिकारी व जवानांची माहिती";
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            font-family: 'DVOT-SurekhMR', sans-serif;
+        }
+
+        h4, h5 {
+            font-family: 'DVOT-SurekhMR';
+            font-weight: bold;
+        }
+
+        .section-box {
+            background: #fff0f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-table {
+            background: #fffafc;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+            .info-table th {
+                background: linear-gradient(90deg, #6a11cb, #2575fc);
+                color: white;
+                text-align: center;
+                font-size: 14px;
+            }
+
+            .info-table td {
+                background: #f7faff;
+            }
+
+        .add-row-btn {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 6px 14px;
+            font-weight: 600;
+        }
+
+            .add-row-btn:hover {
+                transform: scale(1.05);
+            }
+
+        .btn-danger.btn-sm {
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .form-control {
+            font-family: 'DVOT-SurekhMR';
+            font-size: 12pt;
+        }
+
+        .user-section {
+            background: linear-gradient(90deg, #89f7fe, #66a6ff);
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+            .user-section label {
+                font-size: 13pt;
+                font-weight: 500;
+            }
+
+        .office-section {
+            background: linear-gradient(90deg, #ffecd2, #fcb69f);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+
+    </style>
+</head>
+
+<body class="p-4">
+    <div class="container p-4 shadow-lg rounded bg-light">
+        <form asp-action="@(Model.UserId == 0 ? "Create" : "Edit")" asp-controller="Admin" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="UserId" />
+
+            <h4 class="text-center mb-4 text-primary">अधिकारी व जवानांची माहिती</h4>
+
+        <!-- 🟠 युजर लॉगिन माहिती -->
+        <section class="user-section">
+            <h5 class="mb-3">User Login Information (English)</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Username</label>
+                        <input asp-for="UserName" class="form-control" />
+                        @if (Model.UserId == 0)
+                        {
+                            <div class="col-md-4">
+                                <label class="form-label">Password</label>
+                                <input asp-for="Password" type="password" class="form-control" />
+                            </div>
+                        }
+
+                <div class="col-md-4">
+                    <label class="form-label">User Type</label>
+                        <select asp-for="UserType" class="form-control">
+                        <option value="Admin">Admin</option>
+                        <option value="User">User</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🟣 ऑफिस माहिती -->
+            <section class="office-section mb-4">
+                <h5 class="mb-3">ऑफीस माहिती</h5>
+                <div class="row g-3">
+
+
+                   
+                    <div class="col-md-2">
+                        <label class="form-label">पद</label>
+                        <input asp-for="Post" class="form-control marathi" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">कार्यालय</label>
+                        <input asp-for="OfficeName" class="form-control marathi" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">कार्यालयाचा पत्ता</label>
+                        <input asp-for="OfficeAddress" class="form-control marathi" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">जिल्हा</label>
+                        <input asp-for="District" class="form-control marathi" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">विभाग</label>
+                        <input asp-for="Division" class="form-control marathi" />
+                    </div>
+
+                </div>
+            </section>
+
+
+
+
+        <!-- 🟢 अधिकारी माहिती -->
+        <section class="section-box">
+            <h5 class="mb-3">अधिकारी माहिती</h5>
+            <div class="table-responsive">
+                <table id="officerTable" class="table table-bordered align-middle info-table">
+                    <thead>
+                        <tr>
+                            <th style="width:70px;">अ. क्र.</th>
+                            <th>अधिकाऱ्याचे नाव</th>
+                            <th>पद</th>
+                            <th>कार्यालय</th>
+                            <th>कार्यालयाचा पत्ता</th>
+                            <th>जिल्हा</th>
+                            <th>विभाग</th>
+                            <th>काढा</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Officers.Count; i++)
+                        {
+                            <tr>
+                                <td>@(i + 1)</td>
+
+
+                                    <input type="hidden" asp-for="Officers[i].OfficerId" />
+                                    <input type="hidden" asp-for="Officers[i].UserId" />
+
+                                <td><input asp-for="Officers[i].OfficerName" class="form-control marathi" /></td>
+                                <td><input asp-for="Officers[i].OfficerRank" class="form-control marathi" /></td>
+                                <td><input asp-for="Officers[i].OfficeName" class="form-control marathi" /></td>
+                                <td><input asp-for="Officers[i].OfficeAddress" class="form-control marathi" /></td>
+                                <td><input asp-for="Officers[i].District" class="form-control marathi" /></td>
+                                <td><input asp-for="Officers[i].Division" class="form-control marathi" /></td>
+                                <td><button type="button" class="btn btn-danger btn-sm remove-officer-row">×</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button type="button" id="addOfficerRow" class="btn add-row-btn mt-2">+ अधिकारी जोडा</button>
+            </div>
+        </section>
+
+        <!-- 🔵 जवान माहिती -->
+        <section class="section-box">
+            <h5 class="mb-3">जवानांची माहिती</h5>
+            <div class="table-responsive">
+                <table id="jawansTable" class="table table-bordered align-middle info-table">
+                    <thead>
+                        <tr>
+                            <th style="width:70px;">अ. क्र.</th>
+                            <th>जवानाचे नाव</th>
+                             <th>कार्यालय</th>
+                            <th>कार्यालयाचा पत्ता</th>
+                            <th>जिल्हा</th>
+                            <th>विभाग</th>
+                            <th>काढा</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Jawans.Count; i++)
+                        {
+                            <tr>
+                                <td>@(i + 1)</td>
+
+                                    <input type="hidden" asp-for="Jawans[i].JawanId" />
+                                    <input type="hidden" asp-for="Jawans[i].UserId" />
+
+                                <td><input asp-for="Jawans[i].JawanName" class="form-control marathi" /></td>
+                                <td><input asp-for="Jawans[i].OfficeName" class="form-control marathi" /></td>
+                                <td><input asp-for="Jawans[i].OfficeAddress" class="form-control marathi" /></td>
+                                <td><input asp-for="Jawans[i].District" class="form-control marathi" /></td>
+                                <td><input asp-for="Jawans[i].Division" class="form-control marathi" /></td>
+                                <td><button type="button" class="btn btn-danger btn-sm remove-jawan-row">×</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button type="button" id="addJawanRow" class="btn add-row-btn mt-2">+ जवान जोडा</button>
+            </div>
+        </section>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success px-4 me-2">Save</button>
+            <button type="reset" class="btn btn-warning px-4 me-2">रीसेट</button>
+            <a asp-action="Index" class="btn btn-secondary px-4">Back</a>
+        </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            function updateIndexes(tableBody) {
+                Array.from(tableBody.rows).forEach((row, index) => {
+                    row.cells[0].textContent = index + 1;
+                    row.querySelectorAll("input").forEach(input => {
+                        input.name = input.name.replace(/\[\d+\]/, `[${index}]`);
+                    });
+                });
+            }
+
+            // OFFICERS
+            const officerTable = document.querySelector('#officerTable tbody');
+            document.getElementById('addOfficerRow').addEventListener('click', () => {
+                const index = officerTable.rows.length;
+                officerTable.insertRow().innerHTML = `
+        <td>${index + 1}</td>
+        <input type="hidden" name="Officers[${index}].OfficerId" value="0" />
+        <input type="hidden" name="Officers[${index}].UserId" value="@Model.UserId" />
+        <td><input name="Officers[${index}].OfficerName" class="form-control marathi" /></td>
+        <td><input name="Officers[${index}].OfficerRank" class="form-control marathi" /></td>
+        <td><input name="Officers[${index}].OfficeName" class="form-control marathi" /></td>
+        <td><input name="Officers[${index}].OfficeAddress" class="form-control marathi" /></td>
+        <td><input name="Officers[${index}].District" class="form-control marathi" /></td>
+        <td><input name="Officers[${index}].Division" class="form-control marathi" /></td>
+        <td><button type="button" class="btn btn-danger btn-sm remove-officer-row">×</button></td>`;
+            });
+
+            officerTable.addEventListener('click', e => {
+                if (e.target.classList.contains('remove-officer-row')) {
+                    e.target.closest('tr').remove();
+                    updateIndexes(officerTable);
+                }
+            });
+
+            // JAWANS
+            const jawansTable = document.querySelector('#jawansTable tbody');
+            document.getElementById('addJawanRow').addEventListener('click', () => {
+                const index = jawansTable.rows.length;
+                jawansTable.insertRow().innerHTML = `
+        <td>${index + 1}</td>
+        <input type="hidden" name="Jawans[${index}].JawanId" value="0" />
+        <input type="hidden" name="Jawans[${index}].UserId" value="@Model.UserId" />
+        <td><input name="Jawans[${index}].JawanName" class="form-control marathi" /></td>
+        <td><input name="Jawans[${index}].OfficeName" class="form-control marathi" /></td>
+        <td><input name="Jawans[${index}].OfficeAddress" class="form-control marathi" /></td>
+        <td><input name="Jawans[${index}].District" class="form-control marathi" /></td>
+        <td><input name="Jawans[${index}].Division" class="form-control marathi" /></td>
+        <td><button type="button" class="btn btn-danger btn-sm remove-jawan-row">×</button></td>`;
+            });
+
+            jawansTable.addEventListener('click', e => {
+                if (e.target.classList.contains('remove-jawan-row')) {
+                    e.target.closest('tr').remove();
+                    updateIndexes(jawansTable);
+                }
+            });
+        });
+    </script>
+
+
+   
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CrimePortal.ViewModels.CrimeRegisterListViewModel>
+
+@{
+    ViewData["Title"] = "गुन्हा नोंदी यादी";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>क्र.</th>
+            <th>वर्ष</th>
+            <th>गुन्हा क्रमांक</th>
+            <th>दिनांक</th>
+            <th>आरोपीचे नाव</th>
+            <th>पोलीस स्टेशन</th>
+            <th>मुद्देमालाची वर्ग</th>
+            <th>मुद्देमालाचा प्रकार</th>
+            <th>एकूण किंमत</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Select((c, i) => new { c, i }))
+        {
+            <tr>
+                <td>@(item.i + 1)</td>
+                <td>@item.c.Year</td>
+                <td>@item.c.CaseNumber</td>
+                <td>@item.c.CrimeDate.ToShortDateString()</td>
+                <td>@item.c.AccusedName</td>
+                <td>@item.c.PoliceStation</td>
+                <td>@item.c.SeizedItems</td>
+                <td>@item.c.SeizedValue</td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="CrimeRegisterController" asp-action="Index" class="btn btn-primary mt-3">
+    + नवीन गुन्हा जोडा
+</a>

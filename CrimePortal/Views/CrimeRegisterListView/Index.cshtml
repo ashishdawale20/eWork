@@ -1,0 +1,311 @@
+﻿@model IEnumerable<CrimePortal.ViewModels.CrimeRegisterListViewModel>
+
+@{
+    ViewData["Title"] = "गुन्हा नोंदी यादी";
+}
+
+<!-- ✅ Marathi Font -->
+<link href="https://cdn.jsdelivr.net/gh/PravinS/DVOT-SurekhMR/font.css" rel="stylesheet" />
+
+<div class="container mt-4 font-marathi">
+
+    <!-- 🌈 Fixed Gradient Header Section -->
+    <div class="sticky-top header-gradient py-3 shadow-sm rounded-3 mb-4">
+        <h2 class="text-center fw-bold mb-3">📝 गुन्हा नोंदी यादी</h2>
+
+        <!-- 🔍 Search Filters -->
+        <form id="searchForm" class="row g-2 align-items-end justify-content-center px-2">
+            <div class="col-md-2">
+                <label class="form-label text-white">गुन्हा क्र.</label>
+                <input type="text" id="caseNumber" class="form-control" placeholder="उदा. 123">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label text-white">आरोपीचे नाव</label>
+                <input type="text" id="accusedName" class="form-control" placeholder="आरोपीचे नाव शोधा">
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label text-white">दिनांकापासून</label>
+                <input type="date" id="fromDate" class="form-control">
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label text-white">दिनांकपर्यंत</label>
+                <input type="date" id="toDate" class="form-control">
+            </div>
+
+            <div class="col-md-1">
+                <button type="button" id="searchBtn" class="btn btn-light w-100 fw-bold">🔍 शोधा</button>
+            </div>
+
+            <div class="col-md-2 text-end">
+                <a asp-controller="CrimeRegister" asp-action="Index" class="btn btn-gradient-add w-100">
+                    Back
+                </a>
+            </div>
+        </form>
+    </div>
+
+
+
+  
+
+    <!-- 🧾 Scrollable Table -->
+    <div class="table-responsive shadow-sm rounded" style="max-height:70vh; overflow-y:auto;">
+        <table class="table table-hover align-middle text-center">
+            <thead class="text-white sticky-top" style="background: linear-gradient(to right, #4e73df, #1cc88a); top:0;">
+                <tr>
+                    <th>अ. क्र.</th>
+                    <th>गुन्हा क्रमांक</th>
+                    <th>वर्ष</th>
+                    <th>दिनांक</th>
+                    <th>आरोपीचे नाव</th>
+                    <th>पोलीस स्टेशन</th>
+                    <th>जप्त मुद्देमाल</th>
+                    <th>मुद्देमालाची एकुण किंमत</th>
+                    <th>नमुना वाहक</th>
+                    <th>क्रिया</th>
+                </tr>
+            </thead>
+            <tbody id="crimeTableBody">
+                @foreach (var item in Model.Select((c, i) => new { c, i }))
+                {
+                    var rowClass = item.i % 2 == 0 ? "table-row-even" : "table-row-odd";
+
+                    <tr data-id="@item.c.CrimeRegisterId">
+
+                        <td>@(item.i + 1)</td>
+                        <td>@item.c.CaseNumber</td>
+                        <td>@item.c.Year</td>
+                        <td>@item.c.CrimeDate.ToShortDateString()</td>
+                        <td>@item.c.AccusedName</td>
+                        <td>@item.c.PoliceStation</td>
+                        <td>@item.c.SeizedItems</td>
+                        <td>@item.c.SeizedValue</td>
+                        <td>
+                            <select class="form-select form-select-sm carrier-dropdown readonly">
+                                <option value="">नमुना वाहक निवडा</option>
+
+                                @foreach (string name in ViewBag.Jawans)
+                                {
+                                    <option value="@name"
+                                            selected="@(item.c.CarrierName == name)">
+                                        @name
+                                    </option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-primary edit-btn">✏️ Edit</button>
+                            <a asp-action="Delete"
+                               asp-route-id="@item.c.CrimeRegisterId"
+                               onclick="return confirm('तुम्हाला खात्री आहे का? हा डाटा कायमचा डिलीट होईल.');"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- 📄 Pagination -->
+@{
+    int page = ViewBag.Page;
+    int totalPages = ViewBag.TotalPages;
+}
+
+<div class="text-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+
+            <!-- ⏮ Previous -->
+            <li class="page-item @(page == 1 ? "disabled" : "")">
+                <a class="page-link" href="?page=@(page - 1)">⟨ मागील</a>
+            </li>
+
+            <!-- 🔢 Page Numbers -->
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(page == i ? "active" : "")">
+                    <a class="page-link" href="?page=@i">@i</a>
+                </li>
+            }
+
+            <!-- ⏭ Next -->
+            <li class="page-item @(page == totalPages ? "disabled" : "")">
+                <a class="page-link" href="?page=@(page + 1)">पुढील ⟩</a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+
+
+
+<!-- 🌸 Styles -->
+<style>
+    /* Marathi Font */
+    .font-marathi {
+        font-family: 'DVOT-SurekhMR', 'Noto Sans Devanagari', sans-serif;
+        font-size: 1rem;
+    }
+
+    body {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: #fff;
+        
+    }
+    /* Gradient Header */
+    .header-gradient {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 30%, #38ef7d 100%);
+        color: #fff;
+        border: 2px solid #1cc88a;
+        padding: 10px 15px;
+    }
+
+    /* Gradient Button */
+    .btn-gradient-add {
+        background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+        color: white;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+    }
+
+        .btn-gradient-add:hover {
+            opacity: 0.9;
+        }
+
+    /* Alternating Table Row Colors */
+    .table-row-even {
+        background-color: #e8f5e9;
+    }
+
+    .table-row-odd {
+        background-color: #e3f2fd;
+    }
+
+        .table-row-even:hover,
+        .table-row-odd:hover {
+            background-color: #dfe6e9;
+            transition: 0.2s;
+        }
+
+    /* Sticky Table Header */
+    thead th {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
+
+    /* Header Inputs */
+    .header-gradient input,
+    .header-gradient select {
+        border: 1px solid #dfe6e9;
+        border-radius: 8px;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .header-gradient input:focus,
+        .header-gradient select:focus {
+            border-color: #00e676;
+            box-shadow: 0 0 8px rgba(0, 230, 118, 0.5);
+        }
+
+    .sticky-top {
+        z-index: 10;
+    }
+
+   
+    /* 🔒 Readonly dropdown look */
+    select.readonly {
+        pointer-events: none; /* क्लिक बंद */
+        background-color: #e9ecef;
+        color: #495057;
+        cursor: not-allowed;
+    }
+
+
+</style>
+
+<!-- ⚙️ Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // ✏️ Edit button
+        document.querySelectorAll(".edit-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+
+                let row = btn.closest("tr");
+                let dropdown = row.querySelector(".carrier-dropdown");
+
+                if (!dropdown) {
+                    console.log("Dropdown not found");
+                    return;
+                }
+
+                dropdown.classList.remove("readonly");
+                dropdown.focus();
+            });
+        });
+
+        // 🔄 On change save + readonly
+        document.querySelectorAll(".carrier-dropdown").forEach(dd => {
+            dd.addEventListener("change", function () {
+
+                let row = dd.closest("tr");
+                let id = row.dataset.id;
+                let carrierName = dd.value;
+
+                if (!id) {
+                    alert("CrimeRegisterId missing");
+                    return;
+                }
+
+                fetch('/CrimeRegisterListView/UpdateCarrier', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `id=${id}&carrierName=${encodeURIComponent(carrierName)}`
+                });
+
+                dd.classList.add("readonly");
+            });
+        });
+
+        // 🔍 Search filter
+        document.getElementById("searchBtn").addEventListener("click", function () {
+            let caseNumber = document.getElementById("caseNumber").value.toLowerCase();
+            let accusedName = document.getElementById("accusedName").value.toLowerCase();
+            let fromDate = document.getElementById("fromDate").value;
+            let toDate = document.getElementById("toDate").value;
+
+            document.querySelectorAll("#crimeTableBody tr").forEach(row => {
+                let caseNo = row.children[1].innerText.toLowerCase();
+                let name = row.children[4].innerText.toLowerCase();
+                let date = new Date(row.children[3].innerText);
+                let visible = true;
+
+                if (caseNumber && !caseNo.includes(caseNumber)) visible = false;
+                if (accusedName && !name.includes(accusedName)) visible = false;
+                if (fromDate && date < new Date(fromDate)) visible = false;
+                if (toDate && date > new Date(toDate)) visible = false;
+
+                row.style.display = visible ? "" : "none";
+            });
+        });
+
+    });
+</script>
+
+
+
+
+
+

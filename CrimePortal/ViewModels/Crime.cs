@@ -7,7 +7,7 @@ namespace CrimePortal.ViewModels
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "गु र क्र व दिनांक")]
+        [Display(Name = "गुन्हा क्रमांक व दिनांक")]
         public string CrimeNoDate { get; set; }
 
         [Display(Name = "गुन्ह्याचे ठिकाण")]
