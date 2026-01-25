@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: crimeportal
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:80
+      - key: ConnectionStrings__DefaultConnection
+        value: Host=aws-0-ap-south-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.kfkuhonsinmmomxeuqfp;Password=Pravin@100000;SSL Mode=Require;Server Compatibility Mode=NoTypeLoading;
+      - key: ConnectionStrings__CrimeRegisterConnection
+        value: Host=aws-0-ap-south-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.kfkuhonsinmmomxeuqfp;Password=Pravin@100000;SSL Mode=Require;Server Compatibility Mode=NoTypeLoading;
+    healthCheckPath: /
