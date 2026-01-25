@@ -6,15 +6,29 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Log connection strings for debugging
+var defaultConn = builder.Configuration.GetConnectionString("DefaultConnection");
+var crimeRegConn = builder.Configuration.GetConnectionString("CrimeRegisterConnection");
+Console.WriteLine($"🔍 DefaultConnection: {MaskPassword(defaultConn)}");
+Console.WriteLine($"🔍 CrimeRegisterConnection: {MaskPassword(crimeRegConn)}");
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<CRDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("CrimeRegisterConnection")));
+    options.UseNpgsql(crimeRegConn));
 
 // Configure EF Core with PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(defaultConn));
+
+static string MaskPassword(string? connStr)
+{
+    if (string.IsNullOrEmpty(connStr)) return "NULL";
+    var parts = connStr.Split(';');
+    var masked = parts.Select(p => p.ToLower().Contains("password") ? "Password=***MASKED***" : p);
+    return string.Join(";", masked);
+}
 
 // ✅ (नया जोड़ा गया कोड) — Authentication जोड़ने के लिए
 builder.Services.AddAuthentication("MyCookieAuth")
