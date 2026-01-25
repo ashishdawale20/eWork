@@ -13,7 +13,7 @@ services:
       - key: ASPNETCORE_URLS
         value: http://0.0.0.0:80
       - key: ConnectionStrings__DefaultConnection
-        value: Host=aws-0-ap-south-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.kfkuhonsinmmomxeuqfp;Password=Pravin@100000;SSL Mode=Require;Server Compatibility Mode=NoTypeLoading;
+        value: User Id=postgres.kfkuhonsinmmomxeuqfp;Password=Pravin@100000;Server=aws-1-ap-southeast-1.pooler.supabase.com;Port=5432;Database=postgres
       - key: ConnectionStrings__CrimeRegisterConnection
-        value: Host=aws-0-ap-south-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.kfkuhonsinmmomxeuqfp;Password=Pravin@100000;SSL Mode=Require;Server Compatibility Mode=NoTypeLoading;
+        value: User Id=postgres.kfkuhonsinmmomxeuqfp;Password=Pravin@100000;Server=aws-1-ap-southeast-1.pooler.supabase.com;Port=5432;Database=postgres
     healthCheckPath: /
