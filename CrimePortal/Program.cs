@@ -10,11 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<CRDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CrimeRegisterConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("CrimeRegisterConnection")));
 
-// Configure EF Core with SQL Server
+// Configure EF Core with PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // ✅ (नया जोड़ा गया कोड) — Authentication जोड़ने के लिए
 builder.Services.AddAuthentication("MyCookieAuth")
