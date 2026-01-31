@@ -13,7 +13,7 @@ namespace CrimePortal.ViewModels
         public int CrimeRegisterId { get; set; }
         public int Year { get; set; }
         public string CaseNumber { get; set; } = string.Empty;
-        public DateTime CrimeDate { get; set; } = DateTime.Today;
+        public DateTime CrimeDate { get; set; } = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc);
         public TimeSpan? TimeFrom { get; set; }
         public TimeSpan? TimeTo { get; set; }
 

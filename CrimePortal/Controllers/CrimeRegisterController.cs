@@ -276,7 +276,9 @@ namespace CrimePortal.Controllers
                     {
                         Year = viewModel.Year,
                         CaseNumber = viewModel.CaseNumber,
-                        CrimeDate = viewModel.CrimeDate,
+                        CrimeDate = viewModel.CrimeDate.Kind == DateTimeKind.Unspecified 
+                            ? DateTime.SpecifyKind(viewModel.CrimeDate, DateTimeKind.Utc)
+                            : viewModel.CrimeDate.ToUniversalTime(),
                         TimeFrom = viewModel.TimeFrom,
                         TimeTo = viewModel.TimeTo,
                         Complainant = viewModel.Complainant,
@@ -325,7 +327,9 @@ namespace CrimePortal.Controllers
                     // ✏️ Existing record अपडेट करा
                     existing.Year = viewModel.Year;
                     existing.CaseNumber = viewModel.CaseNumber;
-                    existing.CrimeDate = viewModel.CrimeDate;
+                    existing.CrimeDate = viewModel.CrimeDate.Kind == DateTimeKind.Unspecified 
+                        ? DateTime.SpecifyKind(viewModel.CrimeDate, DateTimeKind.Utc)
+                        : viewModel.CrimeDate.ToUniversalTime();
                     existing.TimeFrom = viewModel.TimeFrom;
                     existing.TimeTo = viewModel.TimeTo;
                     existing.Complainant = viewModel.Complainant;
