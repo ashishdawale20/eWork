@@ -25,4 +25,6 @@ LICENSE
 README.md
 **/MIGRATION_GUIDE.md
 **/.dist
-**/wwwroot/lib
+# Do NOT exclude static libraries; needed for runtime
+# Previously excluded `wwwroot/lib` caused 404s for JS/CSS in production
+# Remove the ignore so Docker build context includes static assets
