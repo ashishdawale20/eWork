@@ -157,7 +157,7 @@ namespace CrimePortal.Controllers
                 BeerLiters = crime.BeerLiters,
 
                 CarrierName = crime.CarrierName,
-                SampleCount = crime.SampleNumber,
+                SampleCount = ConvertMarathiWordToNumber(crime.SampleNumber),
                 TotalSeizedValue = crime.TotalSeizedValue,
 
                 Panchas = crime.Panchas.ToList(),
@@ -311,7 +311,7 @@ namespace CrimePortal.Controllers
                         BeerLiters = viewModel.BeerLiters,
 
                         CarrierName = viewModel.CarrierName,
-                        SampleNumber = viewModel.SampleCount ?? 0,
+                        SampleNumber = ConvertToMarathiWord(viewModel.SampleCount),
                         TotalSeizedValue = viewModel.TotalSeizedValue ?? 0m,
                         Panchas = viewModel.Panchas?.Where(p => !string.IsNullOrWhiteSpace(p.Name)).ToList() ?? new(),
                         SeizedItems = viewModel.SeizedItems?.Where(s => !string.IsNullOrWhiteSpace(s.PropertyType)).ToList() ?? new(),
@@ -361,7 +361,7 @@ namespace CrimePortal.Controllers
                     existing.District = viewModel.District;
                     existing.Division = viewModel.Division;
                     existing.CarrierName = viewModel.CarrierName;
-                    existing.SampleNumber = viewModel.SampleCount ?? 0;
+                    existing.SampleNumber = ConvertToMarathiWord(viewModel.SampleCount);
                     existing.TotalSeizedValue = viewModel.TotalSeizedValue ?? 0m;
 
                     existing.HandBhattiLiters = viewModel.HandBhattiLiters;
@@ -505,7 +505,7 @@ namespace CrimePortal.Controllers
 );
                 ReplaceText(body, "{Court}", crime.Court);
                 ReplaceText(body, "{Act}", crime.Act);
-                ReplaceText(body, "{SampleNumber}", crime.SampleNumber.ToString());
+                ReplaceText(body, "{SampleNumber}", crime.SampleNumber ?? "");
                 
                 
                 decimal total = 0;
@@ -995,6 +995,46 @@ namespace CrimePortal.Controllers
                 personToWord = "महिलेस";
                 properWord = "हिचे";
             }
+        }
+
+        private string ConvertToMarathiWord(int? count)
+        {
+            if (!count.HasValue) return "";
+
+            return count.Value switch
+            {
+                1 => "एक",
+                2 => "दोन",
+                3 => "तीन",
+                4 => "चार",
+                5 => "पाच",
+                6 => "सहा",
+                7 => "सात",
+                8 => "आठ",
+                9 => "नऊ",
+                10 => "दहा",
+                _ => count.Value.ToString()
+            };
+        }
+
+        private int? ConvertMarathiWordToNumber(string? word)
+        {
+            if (string.IsNullOrWhiteSpace(word)) return null;
+
+            return word switch
+            {
+                "एक" => 1,
+                "दोन" => 2,
+                "तीन" => 3,
+                "चार" => 4,
+                "पाच" => 5,
+                "सहा" => 6,
+                "सात" => 7,
+                "आठ" => 8,
+                "नऊ" => 9,
+                "दहा" => 10,
+                _ => int.TryParse(word, out int num) ? num : null
+            };
         }
 
 

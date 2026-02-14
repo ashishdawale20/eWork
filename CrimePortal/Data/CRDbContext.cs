@@ -18,6 +18,11 @@ namespace CrimePortal.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // ✅ UNIQUE CONSTRAINT: Year + CaseNumber + UserId (per user basis)
+            modelBuilder.Entity<CrimeRegister>()
+                .HasIndex(c => new { c.Year, c.CaseNumber, c.UserId })
+                .IsUnique();
+
             modelBuilder.Entity<Pancha>()
                 .HasOne(p => p.CrimeRegister)
                 .WithMany(c => c.Panchas)

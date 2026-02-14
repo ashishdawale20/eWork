@@ -46,20 +46,6 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-    if (!db.Users.Any(u => u.UserName == "admin"))
-    {
-        var admin = new User
-        {
-            UserName = "admin",
-            PasswordHash = PasswordHelper.Hash("admin"), // ✅ use PasswordHash
-            UserType = "Admin"
-        };
-
-        db.Users.Add(admin);
-        db.SaveChanges();
-        Console.WriteLine("✅ Default admin user created: username=admin, password=admin");
-    }
 }
 
 // Configure the HTTP request pipeline.

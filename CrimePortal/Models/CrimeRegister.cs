@@ -39,7 +39,7 @@ namespace CrimePortal.Models
         public string? Division { get; set; }
 
         public string? CarrierName { get; set; }
-        public int? SampleNumber { get; set; }
+        public string? SampleNumber { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal? TotalSeizedValue { get; set; }

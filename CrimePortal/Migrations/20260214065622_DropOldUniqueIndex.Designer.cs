@@ -3,6 +3,7 @@ using System;
 using CrimePortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CrimePortal.Migrations
 {
     [DbContext(typeof(CRDbContext))]
-    partial class CRDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260214065622_DropOldUniqueIndex")]
+    partial class DropOldUniqueIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,8 +118,8 @@ namespace CrimePortal.Migrations
                     b.Property<string>("ProperWord")
                         .HasColumnType("text");
 
-                    b.Property<string>("SampleNumber")
-                        .HasColumnType("text");
+                    b.Property<int?>("SampleNumber")
+                        .HasColumnType("integer");
 
                     b.Property<TimeSpan?>("TimeFrom")
                         .HasColumnType("interval");

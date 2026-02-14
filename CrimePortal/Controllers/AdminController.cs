@@ -57,9 +57,17 @@ namespace CrimePortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(AdminUserCreateViewModel model)
         {
-            // 🔥 Officers/Jawans validation ignore for CREATE
-            ModelState.Remove("Officers");
-            ModelState.Remove("Jawans");
+            // 🔥 REMOVE OFFICERS VALIDATION
+            foreach (var key in ModelState.Keys.Where(k => k.StartsWith("Officers")).ToList())
+            {
+                ModelState.Remove(key);
+            }
+
+            // 🔥 REMOVE JAWANS VALIDATION
+            foreach (var key in ModelState.Keys.Where(k => k.StartsWith("Jawans")).ToList())
+            {
+                ModelState.Remove(key);
+            }
 
             if (!ModelState.IsValid)
             {
@@ -93,6 +101,38 @@ namespace CrimePortal.Controllers
 
             _context.Offices.Add(office);
             _context.SaveChanges();   // ✅ OFFICE SAVE
+
+
+            // 3️⃣ Save Officers
+            foreach (var o in model.Officers.Where(x => !string.IsNullOrWhiteSpace(x.OfficerName)))
+            {
+                _context.Officers.Add(new Officer
+                {
+                    UserId = user.UserId,
+                    OfficerName = o.OfficerName,
+                    OfficerRank = o.OfficerRank,
+                    OfficeName = o.OfficeName,
+                    OfficeAddress = o.OfficeAddress,
+                    District = o.District,
+                    Division = o.Division
+                });
+            }
+
+            // 4️⃣ Save Jawans
+            foreach (var j in model.Jawans.Where(x => !string.IsNullOrWhiteSpace(x.JawanName)))
+            {
+                _context.Jawans.Add(new Jawan
+                {
+                    UserId = user.UserId,
+                    JawanName = j.JawanName,
+                    OfficeName = j.OfficeName,
+                    OfficeAddress = j.OfficeAddress,
+                    District = j.District,
+                    Division = j.Division
+                });
+            }
+
+            _context.SaveChanges();   // ✅ SAVE ALL
 
             TempData["Success"] = "डेटा यशस्वीरित्या सेव झाला";
             return RedirectToAction("Index");
@@ -216,6 +256,20 @@ namespace CrimePortal.Controllers
                 office.District = model.District;
                 office.Division = model.Division;
             }
+            else
+            {
+                office = new OfficeInfo
+                {
+                    UserId = user.UserId,
+                    Post = model.Post,
+                    OfficeName = model.OfficeName,
+                    OfficeAddress = model.OfficeAddress,
+                    District = model.District,
+                    Division = model.Division
+                };
+
+                _context.Offices.Add(office);
+            }
 
 
             // 🔵 OFFICERS UPDATE
@@ -276,13 +330,9 @@ namespace CrimePortal.Controllers
                 }
             }
 
-
             _context.SaveChanges();
             TempData["Success"] = "डेटा यशस्वीरित्या अपडेट झाला";
             return RedirectToAction("Index");
-
-
-
         }
 
 
